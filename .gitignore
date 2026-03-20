@@ -1,0 +1,31 @@
+# --- 数据存储 (屏蔽本地向量库和图数据库文件) ---
+data/memory/*
+data/neo4j_data/
+data/qdrant_storage/
+!data/memory/.gitkeep
+
+# --- AI 模型 (屏蔽体积巨大的本地模型权重) ---
+model/bge-base-zh-v1.5/
+model/*/
+
+# --- 敏感配置 (屏蔽包含 API Key 的文件) ---
+.env
+config/*.yaml
+config/*.json
+config_dev.yaml
+config.yaml
+# 排除掉模板文件，方便他人参考
+!config/config.yaml.example
+
+# --- Python 运行环境 ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+.history/
+
+# --- 系统文件 ---
+.DS_Store
+*.log

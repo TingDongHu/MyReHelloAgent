@@ -1,0 +1,42 @@
+# ==========================================
+# HelloAgent 项目配置文件模板
+# 使用方法：复制此文件为 config.yaml 并根据实际环境修改
+# ==========================================
+
+# 1. LLM 模型配置 (支持 OpenAI 格式接口，如 Ollama, DeepSeek, GPT)
+llm:
+  base_url: "http://127.0.0.1:11434/v1" # 默认指向本地 Ollama
+  api_key: "your_api_key_here"           # 如果是本地 Ollama 通常填 'ollama'
+  temperature: 0.7
+  stream: true
+  # 角色分配
+  main_model: "deepseek-r1:8b"           # 负责核心逻辑决策
+  memory_model: "qwen2.5:1.5b"          # 负责轻量级事实提取与总结
+
+# 2. Embedding 向量化配置
+embedding:
+  provider: "local"                      # 选项: local, openai
+  # 本地模型请填写相对路径或服务器绝对路径
+  model_name: "./model/bge-base-zh-v1.5"
+  vector_size: 768                       # BGE-Base 为 768，BGE-Small 为 512
+
+# 3. 数据库基础设施配置 (由 MemoryFactory 统一读取)
+db:
+  # 图数据库：用于 Semantic Memory (语义记忆) 的结构化事实存储
+  neo4j:
+    uri: "bolt://localhost:7687"
+    user: "neo4j"
+    password: "your_password_here"
+
+  # 向量数据库：用于 Episodic Memory (情节记忆) 的语义检索
+  qdrant:
+    url: "http://127.0.0.1:6333"
+    api_key: ""                          # 线上版本需填 Key，本地默认可留空
+    collection_name: "hello_agent_memories"
+
+# 4. 记忆层业务参数配置
+agent:
+  memory:
+    working_capacity: 10                 # 工作记忆（对话轮数）上限
+    enable_auto_summarize: true          # 是否在超出容量时自动触发 LLM 总结
+    semantic_max_retries: 3              # LLM 提取事实三元组时的容错重试次数
