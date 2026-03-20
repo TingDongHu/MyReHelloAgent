@@ -1,18 +1,9 @@
-# Enhanced Project Reference for AI
+# MyReHelloAgent - Core Logic Reference for AI
 
-## 1. Directory Structure
+## 1. Directory Structure (Core Only)
 ```text
 ./
     ├── main.py
-    ├── test_agent_memory_integration.py
-    ├── test_agent_mind_loop.py
-    ├── test_episodic_factory.py
-    ├── test_episodic_memory.py
-    ├── test_long_term_memory_recall.py
-    ├── test_neo4j_conn.py
-    ├── test_semantic_memory.py
-    ├── test_tool_memory_loop.py
-    ├── test_working_memory.py
     core/
         agent/
             ├── executor.py
@@ -47,155 +38,16 @@
         tool/
             ├── base.py
             ├── registry.py
-    data/
-        memory/
-        neo4j_data/
-        qdrant_storage/
-            .deleted/
-            aliases/
-            collections/
-                episodic_memory/
-                    0/
-                        segments/
-                            424b4ca1-3e42-4379-989a-b53f4b56aeb3/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                            43d56730-cb39-4eb2-8a10-122933193197/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                            5686ea6f-4d9a-4132-a7ab-791235677363/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                            5be291e1-28e7-4f0e-9ef4-93378ac8bdc3/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                            67a5faa4-bbc0-4295-ab25-d54d0178f880/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                            9a326089-1ba7-4872-a4a4-6a9418bb7d4b/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                        wal/
-                semantic_memory/
-                    0/
-                        segments/
-                            176b5697-389a-4362-9772-cb805c562068/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                            1de891f3-4416-447d-936e-1fb95d05979c/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                            55c31396-a311-4859-af99-76dfb7fcbe93/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                            56a7dacd-05ba-4741-84a5-17973ed3e855/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                            63bc474f-8849-44be-89ea-892312b1c1dc/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                            6ba8a5d3-c598-459a-8e4d-3b20e3f9e96a/
-                                payload_index/
-                                payload_storage/
-                                vector_storage/
-                                    deleted/
-                                    vectors/
-                        wal/
-    model/
-        bge-base-zh-v1.5/
-            1_Pooling/
     tools/
         ├── calculator.py
 ```
 ---
 
-## 2. Technical API Details
+## 2. Core API Details
 
 ## File: `.\main.py`
 **Imports:** `os, core.config.loader.ConfigLoader, core.llm.factory.LLMFactory, core.agent.executor.AgentExecutor, core.tool.registry.ToolRegistry, tools.calculator.Calculator`
 - **Function**: `main()`
---------------------
-
-## File: `.\test_agent_memory_integration.py`
-**Imports:** `os, uuid, time, shutil, qdrant_client.QdrantClient, qdrant_client.http.models, sentence_transformers.SentenceTransformer, core.config.loader.ConfigLoader, core.memory.types.episodic.EpisodicMemory, core.memory.base.MemoryItem`
-### Class: `SimpleEmbedder`
-    - **Method**: `__init__(self, model_name: str)`
-    - **Method**: `embed_query(self, text: str)`
-- **Function**: `test_episodic_logic()`
---------------------
-
-## File: `.\test_agent_mind_loop.py`
-**Imports:** `time, core.config.loader.ConfigLoader, core.llm.factory.LLMFactory, core.embedding.local_provider.LocalEmbedder, core.memory.factory.MemoryFactory, core.memory.base.MemoryItem, core.schema.message.Message`
-- **Function**: `test_memory_evolution()`
---------------------
-
-## File: `.\test_episodic_factory.py`
-**Imports:** `core.config.loader.ConfigLoader, core.llm.factory.MemoryLLMFactory, core.embedding.local_provider.LocalEmbedder, core.memory.factory.MemoryFactory, core.memory.base.MemoryItem`
-- **Function**: `test_manager_intelligence()`
---------------------
-
-## File: `.\test_episodic_memory.py`
-**Imports:** `os, time, core.config.loader.ConfigLoader, core.embedding.local_provider.LocalEmbedder, core.memory.factory.MemoryFactory, core.memory.base.MemoryItem`
-- **Function**: `test_episodic_flow()`
---------------------
-
-## File: `.\test_long_term_memory_recall.py`
-**Imports:** `time, core.config.loader.ConfigLoader, core.llm.factory.MemoryLLMFactory, core.memory.manager.MemoryManager, core.memory.types.working.WorkingMemory, core.memory.types.episodic.EpisodicMemory, core.memory.base.MemoryType, core.agent.executor.AgentExecutor, core.tool.registry.ToolRegistry, qdrant_client.QdrantClient`...
-- **Function**: `setup_agent()`  # 模拟环境初始化（每次调用相当于程序重启）
-- **Function**: `test_recall_loop()`
---------------------
-
-## File: `.\test_neo4j_conn.py`
-**Imports:** `sys, os, core.config.loader.ConfigLoader, core.memory.storage.neo4j_storage.Neo4jStorage`
-- **Function**: `test_neo4j_connection()`
---------------------
-
-## File: `.\test_semantic_memory.py`
-**Imports:** `sys, os, core.config.loader.ConfigLoader, core.llm.factory.MemoryLLMFactory, core.embedding.local_provider.LocalEmbedder, core.memory.factory.MemoryFactory, core.memory.base.MemoryItem`
-- **Function**: `test_semantic_flow()`
---------------------
-
-## File: `.\test_tool_memory_loop.py`
-**Imports:** `core.config.loader.ConfigLoader, core.llm.factory.LLMFactory, core.embedding.local_provider.LocalEmbedder, core.memory.base.MemoryType, core.memory.factory.MemoryFactory, core.agent.executor.AgentExecutor, core.tool.registry.ToolRegistry, tools.calculator.Calculator`
-- **Function**: `test_tool_memory_loop()`
---------------------
-
-## File: `.\test_working_memory.py`
-**Imports:** `os, sys, time, core.config.loader.ConfigLoader, core.llm.factory.MemoryLLMFactory, core.memory.types.working.WorkingMemory, core.memory.base.MemoryItem`
-- **Function**: `test_working_v2()`
 --------------------
 
 ## File: `.\core\agent\executor.py`
@@ -211,7 +63,6 @@
 ## File: `.\core\agent\prompts.py`
 **Imports:** `datetime.datetime`
 ### Class: `PromptManager`
-    - **Property**: `DEFAULT_TEMPLATE`
     - **Method**: `get_prompt(tool_manifest: str, custom_path: str)` -> str
 --------------------
 
@@ -267,10 +118,6 @@
 ## File: `.\core\memory\base.py`
 **Imports:** `abc.ABC, datetime.datetime, enum.Enum, typing.Any, pydantic.BaseModel`
 ### Class: `MemoryType`
-    - **Property**: `WORKING`
-    - **Property**: `EPISODIC`
-    - **Property**: `SEMANTIC`
-    - **Property**: `PERCEPTUAL`
 ### Class: `MemoryItem`
   > 记忆碎片的标准封装
     - **Method**: `to_dict(self)` -> dict
@@ -433,7 +280,6 @@
 ## File: `.\tools\calculator.py`
 **Imports:** `ast, operator, core.tool.base.BaseTool`
 ### Class: `Calculator`
-    - **Property**: `_operators`
     - **Method**: `name(self)`
     - **Method**: `description(self)`
     - **Method**: `_safe_eval(self, node)`  # 递归安全解析 AST 树

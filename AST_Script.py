@@ -1,13 +1,15 @@
 import ast
 import os
 
-# 配置过滤信息
-EXCLUDE_DIRS = {'.git', '__pycache__', 'venv', '.venv', '.idea', '.vscode', 'build', 'dist'}
+# 1. 文件夹过滤配置：跳过数据、模型、缓存和环境目录
+EXCLUDE_DIRS = {
+    '.git', '__pycache__', 'venv', '.venv', '.idea', '.vscode',
+    'build', 'dist', 'data', 'model', 'node_modules'
+}
 
 
 def format_func(node, is_method=False):
     """提取函数/方法的详细签名、参数类型、返回值及注释"""
-    # 提取带类型注解的参数: arg: type
     args_list = []
     for arg in node.args.args:
         arg_str = arg.arg
@@ -15,10 +17,7 @@ def format_func(node, is_method=False):
             arg_str += f": {ast.unparse(arg.annotation)}"
         args_list.append(arg_str)
 
-    # 返回值类型
     ret_ann = f" -> {ast.unparse(node.returns)}" if node.returns else ""
-
-    # 提取 docstring (取第一行精华)
     docstring = ast.get_docstring(node)
     doc_text = f"  # {docstring.splitlines()[0]}" if docstring else ""
 
@@ -35,8 +34,7 @@ def get_detailed_info(file_path):
             return f"  (解析失败: {e})"
 
     results = []
-
-    # 1. 提取导入信息 (了解依赖关系)
+    # 提取导入
     imports = []
     for node in tree.body:
         if isinstance(node, ast.Import):
@@ -46,24 +44,15 @@ def get_detailed_info(file_path):
     if imports:
         results.append(f"**Imports:** `{', '.join(imports[:10])}`" + ("..." if len(imports) > 10 else ""))
 
-    # 2. 遍历类和函数
+    # 遍历类和函数
     for node in tree.body:
         if isinstance(node, ast.ClassDef):
             results.append(f"### Class: `{node.name}`")
-            # 提取类文档
             cls_doc = ast.get_docstring(node)
             if cls_doc: results.append(f"  > {cls_doc.splitlines()[0]}")
-
             for sub_item in node.body:
-                # 提取方法
                 if isinstance(sub_item, ast.FunctionDef):
                     results.append(format_func(sub_item, is_method=True))
-                # 提取类属性/构造函数里的赋值
-                elif isinstance(sub_item, ast.Assign):
-                    for target in sub_item.targets:
-                        if isinstance(target, ast.Name):
-                            results.append(f"    - **Property**: `{target.id}`")
-
         elif isinstance(node, ast.FunctionDef):
             results.append(format_func(node))
 
@@ -71,35 +60,47 @@ def get_detailed_info(file_path):
 
 
 def run():
-    output = ["# Enhanced Project Reference for AI\n"]
+    output = ["# MyReHelloAgent - Core Logic Reference for AI\n"]
+    script_name = os.path.basename(__file__)
 
-    # 1. 结构树
-    output.append("## 1. Directory Structure")
+    # 1. 生成精简目录树
+    output.append("## 1. Directory Structure (Core Only)")
     output.append("```text")
+    output.append("./")
+
     for root, dirs, files in os.walk("."):
         dirs[:] = [d for d in dirs if d not in EXCLUDE_DIRS]
-        level = root.replace(".", "").count(os.sep)
-        indent = " " * 4 * level
-        output.append(f"{indent}{os.path.basename(root)}/")
+
+        rel_path = os.path.relpath(root, ".")
+        level = 0 if rel_path == "." else rel_path.count(os.sep) + 1
+        indent = "    " * level
+
+        if rel_path != ".":
+            output.append(f"{indent}{os.path.basename(root)}/")
+
         for f in files:
-            if f.endswith(".py") and f != os.path.basename(__file__):
+            # 过滤逻辑：必须是 .py 文件，且不是脚本自身，且不以 test_ 开头
+            if f.endswith(".py") and f != script_name and not f.startswith("test_"):
                 output.append(f"{indent}    ├── {f}")
+
     output.append("```\n---\n")
 
-    # 2. 详细 API
-    output.append("## 2. Technical API Details")
+    # 2. 生成核心 API 文档
+    output.append("## 2. Core API Details")
     for root, dirs, files in os.walk("."):
         dirs[:] = [d for d in dirs if d not in EXCLUDE_DIRS]
         for f in files:
-            if f.endswith(".py") and f != os.path.basename(__file__):
+            # 同样应用过滤逻辑
+            if f.endswith(".py") and f != script_name and not f.startswith("test_"):
                 rel_path = os.path.join(root, f)
                 output.append(f"\n## File: `{rel_path}`")
                 output.append(get_detailed_info(rel_path))
                 output.append("-" * 20)
 
-    with open("ai_enhanced_context.md", "w", encoding="utf-8") as f:
+    target_file = "ai_enhanced_context.md"
+    with open(target_file, "w", encoding="utf-8") as f:
         f.write("\n".join(output))
-    print(f"解析完成！请查看 ai_enhanced_context.md")
+    print(f"✅ 核心逻辑提取完成！测试脚本已全部忽略。请查看: {target_file}")
 
 
 if __name__ == "__main__":
